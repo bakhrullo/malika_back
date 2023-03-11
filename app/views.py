@@ -12,7 +12,8 @@ class OrderCreate(APIView):
         serializer = OrderSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        # requests.post()
+        if request.get_full_path() == "/api/v1/order/create":
+            requests.post(url="http://127.0.0.1:8090/api/v1/order/create", data=serializer.data)
         return Response(serializer.data)
 
 
@@ -35,8 +36,11 @@ class PhoneFilter(ListAPIView):
     serializer_class = PhoneSerializer
 
     def get_queryset(self):
-        model = self.request.query_params.get('model')
-        return Phone.objects.filter(model=model)
+        model, name = self.request.query_params.get('model'), self.request.query_params.get('name')
+        if model != "default":
+            return Phone.objects.filter(model=model)
+        elif name != "default":
+            return Phone.objects.filter(name=name)
 
 
 class PhoneList(ListAPIView):

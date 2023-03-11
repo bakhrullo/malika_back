@@ -3,7 +3,7 @@ from django.db import models
 
 class Phone(models.Model):
     model = models.CharField(max_length=200, verbose_name="Model")
-    name = models.CharField(max_length=200, verbose_name="Nomi")
+    name = models.CharField(max_length=200, verbose_name="Nomi", unique=True)
     photo = models.ImageField(verbose_name="Rasmi", null=True, blank=True, upload_to='photos/items/%Y/%m/%d/',)
     descr = models.TextField(verbose_name="Tavsif")
     color = models.CharField(max_length=200, verbose_name="Rangi")
